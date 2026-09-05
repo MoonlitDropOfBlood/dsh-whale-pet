@@ -1,0 +1,38 @@
+{
+  "name": "@duke-dsh-plugins/dsh-whaleharbor-pet",
+  "version": "1.0.0",
+  "description": "鲸港 WhaleHarbor 大白鲸娘桌面窗宠：透明置顶浮窗，实时反映 DSH 空闲/繁忙/审批/子代理等工作状态。px-v42 拆件 + CSS 纸片人动画。",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "parts",
+    "cordis.patch.yml"
+  ],
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" }
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "whaleharbor",
+    "desktop-pet",
+    "float-window",
+    "pixel-art"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoonlitDropOfBlood/dsh-whale-pet.git"
+  },
+  "homepage": "https://github.com/MoonlitDropOfBlood/dsh-whale-pet#readme",
+  "bugs": {
+    "url": "https://github.com/MoonlitDropOfBlood/dsh-whale-pet/issues"
+  },
+  "publishConfig": { "access": "public" },
+  "author": "duke <wwhbygx@sina.com> (dukebywwh / MoonlitDropOfBlood)",
+  "license": "MIT"
+}

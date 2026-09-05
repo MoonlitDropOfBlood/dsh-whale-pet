@@ -1,0 +1,108 @@
+name: Release
+
+# 打 v* 标签（如 v1.0.0）时构建插件包、发布 GitHub Release 并（幂等地）发布 npm。
+# npm 发布走 OIDC Trusted Publishing（无静态 token / 无 OTP，Node 24 自带 npm 11）。
+# 需先在 npmjs.com 包设置里配置 trusted publisher：
+#   repo = MoonlitDropOfBlood/dsh-whale-pet，workflow = .github/workflows/release.yml
+# 已存在于 npm 的版本会跳过 publish（首版可先用本机 token 发布 bootstrap，
+# 之后的 v* 标签全自动）。
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Check & package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Check
+        run: node --check index.js
+
+      - name: Package tarball
+        run: npm pack
+        env:
+          npm_config_package_lock: "false"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-tarball
+          path: ./*.tgz
+
+  publish-npm:
+    name: Publish to npm (Trusted Publishing)
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - run: npm install
+      - name: Skip when this version is already on npm
+        id: check
+        run: |
+          PKG=$(node -p "require('./package.json').name + '@' + require('./package.json').version")
+          if npm view "$PKG" version --registry=https://registry.npmjs.org 2>/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.check.outputs.exists == 'false'
+        run: npm publish
+
+  release:
+    name: Publish GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: List artifacts
+        run: ls -la artifacts/
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          body: |
+            ## ${{ github.ref_name }}
+
+            dsh-whaleharbor-pet — 鲸港 WhaleHarbor 大白鲸娘桌面窗宠。
+
+            ### 功能
+            - 透明置顶不抢焦点浮窗，px-v42 拆件 + CSS 纸片人动画（重组 0 像素误差）。
+            - 八种工作状态：空闲 A/B（呼吸/眨眼/呆毛）、忙碌（汗滴+波浪嘴）、审批 `!`、提问 `?`、出错 XX 眼抖动、完成庆祝蹦跳、打盹 Zzz、子代理分身小鲸。
+            - 戳一戳 / 拖动 / 右键三档尺寸 / 托盘开关，气泡实时统计。
+
+            ### 📦 安装
+            ```bash
+            dsh plugin --profile web add @duke-dsh-plugins/dsh-whaleharbor-pet
+            ```
+            或使用本 Release 附件中的 tgz 包安装。装完**必须重启 DSH** 生效。
+          files: artifacts/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
