@@ -2,3 +2,6 @@ node_modules/
 *.tgz
 *.log
 preview*.html
+.tmp-*
+generated-test/
+parts/*.original.png

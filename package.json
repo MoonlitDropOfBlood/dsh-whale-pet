@@ -1,7 +1,7 @@
 {
   "name": "@duke-dsh-plugins/dsh-whaleharbor-pet",
-  "version": "1.0.0",
-  "description": "鲸港 WhaleHarbor 大白鲸娘桌面窗宠：透明置顶浮窗，实时反映 DSH 空闲/繁忙/审批/子代理等工作状态。px-v42 拆件 + CSS 纸片人动画。",
+  "version": "1.1.0",
+  "description": "鲸港 WhaleHarbor 大白鲸娘桌面窗宠：透明置顶浮窗，实时反映 DSH 空闲/繁忙/审批/子代理等工作状态。2D 拆件 + CSS 纸片人动画。",
   "main": "index.js",
   "exports": {
     ".": "./index.js",
@@ -22,7 +22,7 @@
     "whaleharbor",
     "desktop-pet",
     "float-window",
-    "pixel-art"
+    "2d-avatar"
   ],
   "repository": {
     "type": "git",
