@@ -107,7 +107,7 @@ html,body{margin:0;padding:0;background:transparent;overflow:hidden;height:100%;
 .part{position:absolute;inset:0;background-size:100% 100%;background-repeat:no-repeat;
   image-rendering:pixelated;pointer-events:none}
 .p-base{background-image:url("parts/base.png")}
-.p-ahoge{background-image:url("parts/ahoge.png");transform-origin:39% 22.2%;animation:ahs 4s ease-in-out infinite}
+.p-ahoge{background-image:url("parts/ahoge.png");transform-origin:38.4% 16.3%;animation:ahs 4s ease-in-out infinite}
 .p-eyes-open{background-image:url("parts/eyes-open.png")}
 .p-eyes-closed{background-image:url("parts/eyes-closed.png")}
 .p-eyes-happy{background-image:url("parts/eyes-happy.png")}
