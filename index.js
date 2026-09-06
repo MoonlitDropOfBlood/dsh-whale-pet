@@ -53,7 +53,6 @@ const SIZES = {
   s:  { width: 272, height: 210 },
   m:  { width: 340, height: 260 },
   l:  { width: 430, height: 330 },
-  xl: { width: 500, height: 360 },
 };
 
 /** 零件目录（parts/*.png，启动时扫入缓存，GET /parts/<file> 白名单自取）。 */
@@ -117,8 +116,8 @@ html,body{margin:0;padding:0;background:transparent;overflow:hidden;height:100%;
 .stage{position:fixed;inset:0}
 /* 纸片人：px-v42 拆件拼装。统一画布 917x980（顶部 140 透明给呆毛），
    零件全部 inset:0 同位叠加，动作 = 容器 transform + 零件透明度/小变换 */
-.charwrap{position:absolute;right:0;bottom:0;top:30px;aspect-ratio:917/980;
-  transform-origin:60% 92%;cursor:default}
+.charwrap{position:absolute;left:0;bottom:0;top:30px;aspect-ratio:917/980;
+  transform-origin:40% 92%;cursor:default}
 .charwrap.poked{animation:poke .5s ease}
 .char{position:absolute;inset:0;animation:bob 4.5s ease-in-out infinite}
 .mood-nap.char{filter:saturate(.55) brightness(.92)}
@@ -217,28 +216,28 @@ html,body{margin:0;padding:0;background:transparent;overflow:hidden;height:100%;
 .fxi.h2{animation-delay:1.2s}
 .fxi.spark{width:18px;height:18px;animation:twinkle 1.5s ease-in-out infinite}
 .fxi.s2{animation-delay:.4s}.fxi.s3{animation-delay:.8s}.fxi.s4{animation-delay:1.2s}
-/* 气泡：人物左边竖直居中（max-width 收紧确保不越过角色左缘，三角形指针翻到右侧指向角色） */
-.speech{position:absolute;top:50%;left:4px;max-width:48%;transform:translateY(-50%);z-index:30;background:rgba(255,255,255,.97);
+/* 气泡：人物右边竖直居中（宽度不变；三角形指针翻到左侧指向角色） */
+.speech{position:absolute;top:50%;right:4px;max-width:48%;transform:translateY(-50%);z-index:30;background:rgba(255,255,255,.97);
   border:2px solid #9cc4e8;border-radius:14px;padding:8px 11px;pointer-events:none;
   box-shadow:0 4px 12px rgba(43,94,153,.18);color:#24476b;font-size:12.5px;line-height:1.45;
   opacity:0;transition:opacity .2s ease}
 .speech.on{opacity:1}
-.speech::after{content:"";position:absolute;right:-7px;top:50%;transform:translateY(-50%) rotate(45deg);
+.speech::after{content:"";position:absolute;left:-7px;top:50%;transform:translateY(-50%) rotate(45deg);
   width:12px;height:12px;
-  background:rgba(255,255,255,.97);border-left:2px solid #9cc4e8;border-top:2px solid #9cc4e8}
+  background:rgba(255,255,255,.97);border-left:2px solid #9cc4e8;border-bottom:2px solid #9cc4e8}
 .speech .sub{margin-top:4px;font-size:11px;color:#6d8db0;border-top:1px dashed #cfe2f4;padding-top:4px}
-.badge{position:absolute;right:3%;top:5%;width:26px;height:26px;border-radius:50%;background:#ff6b8a;z-index:20;
+.badge{position:absolute;left:26%;top:5%;width:26px;height:26px;border-radius:50%;background:#ff6b8a;z-index:20;
   color:#fff;font-size:16px;font-weight:700;display:none;align-items:center;justify-content:center;
   box-shadow:0 3px 8px rgba(229,83,122,.4);animation:bounce .9s ease-in-out infinite;pointer-events:none}
 .badge.on{display:flex}
 .badge.q{background:#4a86c8;box-shadow:0 3px 8px rgba(74,134,200,.4)}
 .badge.err{background:#ff9f43;box-shadow:0 3px 8px rgba(255,159,67,.4)}
-.zzz{position:absolute;right:8%;top:8%;color:#7fa8d0;font-weight:700;font-size:14px;letter-spacing:2px;z-index:20;
+.zzz{position:absolute;left:8%;top:8%;color:#7fa8d0;font-weight:700;font-size:14px;letter-spacing:2px;z-index:20;
   display:none;animation:drift 2.6s ease-out infinite;pointer-events:none}
 .zzz.on{display:block}
-.minis{position:absolute;right:2%;bottom:0;display:flex;gap:4px;justify-content:flex-end;align-items:flex-end;z-index:15}
+.minis{position:absolute;left:2%;bottom:0;display:flex;gap:4px;justify-content:flex-start;align-items:flex-end;z-index:15}
 .mini{width:34px;height:auto;opacity:.95;animation:miniswim 1.4s ease-in-out infinite}
-.fallback{position:absolute;right:6%;bottom:8%;font-size:110px;display:none;filter:drop-shadow(0 8px 16px rgba(20,40,80,.30))}
+.fallback{position:absolute;left:6%;bottom:8%;font-size:110px;display:none;filter:drop-shadow(0 8px 16px rgba(20,40,80,.30))}
 </style></head><body>
 <div class="stage" id="stage">
   <div class="speech" id="bubble"><div id="btext"></div><div class="sub" id="bsub"></div></div>
@@ -289,14 +288,14 @@ fetch('parts/base.png').then(function(r){ if(!r.ok) throw new Error('no parts');
 function fxHtml(m){
   var h='';
   if(m==='busy'){
-    h+='<svg class="fxi bub" style="left:58%;top:80%" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" fill="rgba(255,255,255,.45)" stroke="#9fd4ff" stroke-width="2"/></svg>';
-    h+='<svg class="fxi bub b2" style="left:66%;top:86%" viewBox="0 0 20 20"><circle cx="10" cy="10" r="5" fill="rgba(255,255,255,.45)" stroke="#9fd4ff" stroke-width="2"/></svg>';
-    h+='<svg class="fxi bub b3" style="left:88%;top:76%" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6" fill="rgba(255,255,255,.45)" stroke="#9fd4ff" stroke-width="2"/></svg>';
+    h+='<svg class="fxi bub" style="left:42%;top:80%" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" fill="rgba(255,255,255,.45)" stroke="#9fd4ff" stroke-width="2"/></svg>';
+    h+='<svg class="fxi bub b2" style="left:34%;top:86%" viewBox="0 0 20 20"><circle cx="10" cy="10" r="5" fill="rgba(255,255,255,.45)" stroke="#9fd4ff" stroke-width="2"/></svg>';
+    h+='<svg class="fxi bub b3" style="left:12%;top:76%" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6" fill="rgba(255,255,255,.45)" stroke="#9fd4ff" stroke-width="2"/></svg>';
   }
   if(m==='celebrate'){
-    h+='<svg class="fxi heart" style="left:56%;top:8%" viewBox="-8 -8 16 22"><path d="'+HEART+'" fill="#ff8fa3"/></svg>';
-    h+='<svg class="fxi heart h2" style="left:76%;top:4%" viewBox="-8 -8 16 22"><path d="'+HEART+'" fill="#ffb9cc"/></svg>';
-    var at=[['8%','22%'],['90%','16%'],['12%','78%'],['84%','66%']];
+    h+='<svg class="fxi heart" style="left:44%;top:8%" viewBox="-8 -8 16 22"><path d="'+HEART+'" fill="#ff8fa3"/></svg>';
+    h+='<svg class="fxi heart h2" style="left:24%;top:4%" viewBox="-8 -8 16 22"><path d="'+HEART+'" fill="#ffb9cc"/></svg>';
+    var at=[['92%','22%'],['10%','16%'],['88%','78%'],['16%','66%']];
     for(var i=0;i<at.length;i++){
       h+='<svg class="fxi spark s'+(i+1)+'" style="left:'+at[i][0]+';top:'+at[i][1]+'" viewBox="-8 -8 16 16"><path d="'+SPARK+'" fill="#ffd76e"/></svg>';
     }
@@ -496,10 +495,9 @@ module.exports = {
     function petMenuItems() {
       const mark = (s) => (currentSize === s ? "✓ " : "");
       return [
-        { id: "size-s",  label: mark("s")  + "小号" },
-        { id: "size-m",  label: mark("m")  + "中号" },
-        { id: "size-l",  label: mark("l")  + "大号" },
-        { id: "size-xl", label: mark("xl") + "特大号" },
+        { id: "size-s", label: mark("s") + "小号" },
+        { id: "size-m", label: mark("m") + "中号" },
+        { id: "size-l", label: mark("l") + "大号" },
         { type: "separator" },
         { id: "hide", label: "隐藏鲸娘（托盘菜单可唤回）" },
       ];
@@ -563,7 +561,7 @@ module.exports = {
             hidePet();
             return;
           }
-          const m = /^size-(s|m|l|xl)$/.exec(itemId || "");
+          const m = /^size-(s|m|l)$/.exec(itemId || "");
           if (m) resizePet(m[1]);
           return;
         }
