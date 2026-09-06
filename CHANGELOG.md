@@ -2,6 +2,20 @@
 
 All notable changes to dsh-whale-pet will be documented here. Format: [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.1.1] - 2026-09-06
+
+### Added
+- **桌宠尺寸偏好持久化**：右键菜单（小号/中号/大号）选择的尺寸写到 `$DSH_HOME/data/dsh-whale-pet/state.json`，核心重启后自动恢复。路径与兄弟插件（`dsh-deveco` / `dsh-token-stats`）的 `data/` 目录约定一致。
+
+### Fixed
+- 对话框位置：从顶部左挪到底部左再改回顶部左——通过将桌宠整体下移 30px（`charwrap` 的 `top: 30px` 让出顶部气泡区），避免挡住脸部，同时庆祝蹦跳和空闲浮动不受影响。
+- `parts/sweat.png` 重画为干净 SVG 实心泪滴（渐变蓝 + 描边 + 高光），去除早期水平条带拼接留下的内部空白段。
+
+### Docs
+- `AGENTS.md`：项目结构 / 关键机制 / 部署流水线 / 注意事项完整指南（含形象大改同步四处、矩形补丁和纯颜色分类反例）。
+- `CHANGELOG.md`：本文件。
+- `screenshots.json` 已在 1.1.0 加入，此版本维持（市场店面试图自动读取新实拍）。
+
 ## [1.1.0] - 2026-09-06
 
 ### Changed
