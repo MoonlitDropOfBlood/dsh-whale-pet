@@ -217,7 +217,7 @@ html,body{margin:0;padding:0;background:transparent;overflow:hidden;height:100%;
 .fxi.spark{width:18px;height:18px;animation:twinkle 1.5s ease-in-out infinite}
 .fxi.s2{animation-delay:.4s}.fxi.s3{animation-delay:.8s}.fxi.s4{animation-delay:1.2s}
 /* 气泡：人物左边竖直居中（max-width 收紧确保不越过角色左缘，三角形指针翻到右侧指向角色） */
-.speech{position:absolute;top:50%;left:4px;max-width:35%;transform:translateY(-50%);z-index:30;background:rgba(255,255,255,.97);
+.speech{position:absolute;top:50%;left:4px;max-width:48%;transform:translateY(-50%);z-index:30;background:rgba(255,255,255,.97);
   border:2px solid #9cc4e8;border-radius:14px;padding:8px 11px;pointer-events:none;
   box-shadow:0 4px 12px rgba(43,94,153,.18);color:#24476b;font-size:12.5px;line-height:1.45;
   opacity:0;transition:opacity .2s ease}
