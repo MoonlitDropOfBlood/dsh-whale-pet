@@ -99,7 +99,7 @@ html,body{margin:0;padding:0;background:transparent;overflow:hidden;height:100%;
 .stage{position:fixed;inset:0}
 /* 纸片人：px-v42 拆件拼装。统一画布 917x980（顶部 140 透明给呆毛），
    零件全部 inset:0 同位叠加，动作 = 容器 transform + 零件透明度/小变换 */
-.charwrap{position:absolute;right:0;bottom:0;height:100%;aspect-ratio:917/980;
+.charwrap{position:absolute;right:0;bottom:0;top:30px;aspect-ratio:917/980;
   transform-origin:60% 92%;cursor:default}
 .charwrap.poked{animation:poke .5s ease}
 .char{position:absolute;inset:0;animation:bob 4.5s ease-in-out infinite}
@@ -199,14 +199,14 @@ html,body{margin:0;padding:0;background:transparent;overflow:hidden;height:100%;
 .fxi.h2{animation-delay:1.2s}
 .fxi.spark{width:18px;height:18px;animation:twinkle 1.5s ease-in-out infinite}
 .fxi.s2{animation-delay:.4s}.fxi.s3{animation-delay:.8s}.fxi.s4{animation-delay:1.2s}
-/* 气泡：底部左侧空区，避开角色脸部（角色占右侧，汗滴/小鲸在右下） */
-.speech{position:absolute;bottom:6px;left:4px;max-width:62%;z-index:30;background:rgba(255,255,255,.97);
+/* 气泡：顶部左侧空区，绝不遮挡右下角色（角色整体下移留出顶距） */
+.speech{position:absolute;top:6px;left:4px;max-width:58%;z-index:30;background:rgba(255,255,255,.97);
   border:2px solid #9cc4e8;border-radius:14px;padding:8px 11px;pointer-events:none;
   box-shadow:0 4px 12px rgba(43,94,153,.18);color:#24476b;font-size:12.5px;line-height:1.45;
   opacity:0;transition:opacity .2s ease}
 .speech.on{opacity:1}
-.speech::after{content:"";position:absolute;right:18%;top:-8px;width:12px;height:12px;
-  background:rgba(255,255,255,.97);border-left:2px solid #9cc4e8;border-top:2px solid #9cc4e8;
+.speech::after{content:"";position:absolute;right:22%;bottom:-8px;width:12px;height:12px;
+  background:rgba(255,255,255,.97);border-right:2px solid #9cc4e8;border-bottom:2px solid #9cc4e8;
   transform:rotate(45deg)}
 .speech .sub{margin-top:4px;font-size:11px;color:#6d8db0;border-top:1px dashed #cfe2f4;padding-top:4px}
 .badge{position:absolute;right:3%;top:5%;width:26px;height:26px;border-radius:50%;background:#ff6b8a;z-index:20;
