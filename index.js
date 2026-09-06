@@ -50,9 +50,10 @@ function saveState(patch) {
 
 /** 浮窗尺寸档位（宽×高，鲸娘在右下，气泡在左上）。 */
 const SIZES = {
-  s: { width: 272, height: 210 },
-  m: { width: 340, height: 260 },
-  l: { width: 430, height: 330 },
+  s:  { width: 272, height: 210 },
+  m:  { width: 340, height: 260 },
+  l:  { width: 430, height: 330 },
+  xl: { width: 500, height: 360 },
 };
 
 /** 零件目录（parts/*.png，启动时扫入缓存，GET /parts/<file> 白名单自取）。 */
@@ -495,9 +496,10 @@ module.exports = {
     function petMenuItems() {
       const mark = (s) => (currentSize === s ? "✓ " : "");
       return [
-        { id: "size-s", label: mark("s") + "小号" },
-        { id: "size-m", label: mark("m") + "中号" },
-        { id: "size-l", label: mark("l") + "大号" },
+        { id: "size-s",  label: mark("s")  + "小号" },
+        { id: "size-m",  label: mark("m")  + "中号" },
+        { id: "size-l",  label: mark("l")  + "大号" },
+        { id: "size-xl", label: mark("xl") + "特大号" },
         { type: "separator" },
         { id: "hide", label: "隐藏鲸娘（托盘菜单可唤回）" },
       ];
@@ -561,7 +563,7 @@ module.exports = {
             hidePet();
             return;
           }
-          const m = /^size-(s|m|l)$/.exec(itemId || "");
+          const m = /^size-(s|m|l|xl)$/.exec(itemId || "");
           if (m) resizePet(m[1]);
           return;
         }
