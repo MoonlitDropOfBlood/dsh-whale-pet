@@ -25,11 +25,28 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const os = require("os");
 
 const PORT = process.env.DSH_DESKTOP_NOTIFY_PORT || "";
 const TOKEN = process.env.DSH_DESKTOP_NOTIFY_TOKEN || "";
 const BRIDGE_URL = `http://127.0.0.1:${PORT}/`;
 const PLUGIN = "dsh-whale-pet";
+
+/** 用户偏好持久化：$DSH_HOME/data/<plugin>/state.json，跨核心重启保留。 */
+const STATE_FILE = path.join(
+  process.env.DSH_HOME || path.join(os.homedir(), ".dsh"),
+  "data", PLUGIN, "state.json"
+);
+function loadState() {
+  try { return JSON.parse(fs.readFileSync(STATE_FILE, "utf8")); } catch { return {}; }
+}
+function saveState(patch) {
+  try {
+    fs.mkdirSync(path.dirname(STATE_FILE), { recursive: true });
+    const cur = loadState();
+    fs.writeFileSync(STATE_FILE, JSON.stringify({ ...cur, ...patch }, null, 2));
+  } catch { /* 沙箱或权限问题不致命，下一次 size 切换再试 */ }
+}
 
 /** 浮窗尺寸档位（宽×高，鲸娘在右下，气泡在左上）。 */
 const SIZES = {
@@ -433,7 +450,7 @@ module.exports = {
     let floatSupported = true;
     let floatId = null;
     let petVisible = true;
-    let currentSize = "m";
+    let currentSize = loadState().size || "m";
     let lastPushText = "";
 
     function pushState(force) {
@@ -493,6 +510,7 @@ module.exports = {
     function resizePet(size) {
       if (!SIZES[size] || size === currentSize) return;
       currentSize = size;
+      saveState({ size });
       closePet();
       createPet(); // 壳缓存最新 state，did-finish-load 后自动补发，新窗立即恢复状态
     }
