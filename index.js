@@ -217,15 +217,15 @@ html,body{margin:0;padding:0;background:transparent;overflow:hidden;height:100%;
 .fxi.h2{animation-delay:1.2s}
 .fxi.spark{width:18px;height:18px;animation:twinkle 1.5s ease-in-out infinite}
 .fxi.s2{animation-delay:.4s}.fxi.s3{animation-delay:.8s}.fxi.s4{animation-delay:1.2s}
-/* 气泡：人物左边竖直居中（max-width 收紧确保不越过角色左缘，三角形指针翻到右侧指向角色） */
-.speech{position:absolute;top:50%;left:4px;max-width:48%;transform:translateY(-50%);z-index:30;background:rgba(255,255,255,.97);
+/* 气泡：人物左边、脸下方（top:54% 三档尺寸均在脸底之下；46% 宽三档都不碰脸左缘；指针指向脸） */
+.speech{position:absolute;top:54%;left:4px;max-width:46%;z-index:30;background:rgba(255,255,255,.97);
   border:2px solid #9cc4e8;border-radius:14px;padding:8px 11px;pointer-events:none;
   box-shadow:0 4px 12px rgba(43,94,153,.18);color:#24476b;font-size:12.5px;line-height:1.45;
   opacity:0;transition:opacity .2s ease}
 .speech.on{opacity:1}
-.speech::after{content:"";position:absolute;right:-7px;top:50%;transform:translateY(-50%) rotate(45deg);
+.speech::after{content:"";position:absolute;right:-7px;top:14px;transform:rotate(45deg);
   width:12px;height:12px;
-  background:rgba(255,255,255,.97);border-left:2px solid #9cc4e8;border-top:2px solid #9cc4e8}
+  background:rgba(255,255,255,.97);border-top:2px solid #9cc4e8;border-right:2px solid #9cc4e8}
 .speech .sub{margin-top:4px;font-size:11px;color:#6d8db0;border-top:1px dashed #cfe2f4;padding-top:4px}
 .badge{position:absolute;right:3%;top:5%;width:26px;height:26px;border-radius:50%;background:#ff6b8a;z-index:20;
   color:#fff;font-size:16px;font-weight:700;display:none;align-items:center;justify-content:center;
